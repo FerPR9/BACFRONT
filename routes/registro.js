@@ -1,14 +1,22 @@
 var express = require("express");
 var router = express.Router();
-let productModel = require('../modelos/productModel');
+let Registro = require('../models/Registro');
+const registroController = require('../controllers/registroController')
 
 //Listado de todos los productos
-router.get("/", async function (req, res, next) {
-  const resultado = await productModel.find();
+/*router.get("/", async function (req, res, next) {
+  const resultado = await Registro.find();
   res.json(resultado);
-});
+});*/
 
-router.post("/", async function (req, res, next) {
+//registro
+router.post('/', registroController.crearRegistro);
+router.get('/', registroController.obtenerRegistros);
+router.put('/:id', registroController.actualizarRegistro);
+router.get('/:id', registroController.obtenerRegistro);
+router.delete('/:id', registroController.eliminarRegistro);
+
+/*router.post("/", async function (req, res, next) {
   let producto = new productModel({
     "id": req.body.id,
     "name": req.body.name,
@@ -20,30 +28,21 @@ router.post("/", async function (req, res, next) {
   res.json("Producto agregado");  
 });
 
-
 router.put("/:id", async function (req, res, next) {
-
-  const filter = {id: req.query.id}; //Condición de Query
-  const update = {name: req.query.name}; //Campos a modificar
-  const resultado = await productModel.findOneAndUpdate(filter, update, {
-    new:true,
-    upsert: true
-  });
-
+  const filter = {id: req.query.id}; 
+  const update = {name: req.query.name}; 
+  const resultado = await productModel.findOneAndUpdate(filter, update, { new:true, upsert: true });
   res.json("Producto actualizado correctamente");
 });
 
 router.delete("/:id", async function (req, res, next) {
-  //Buscar un producto por ID y regresa una lista
   const resul = await productModel.find({id: req.params.id}).exec();
-  //Si se encontró lo elimina
   if (resul.length > 0) {
       await productModel.deleteOne({id: req.params.id});
       res.json("Producto eliminado correctamente");
   } else {
       res.json({error: "No se encontró el producto con Id " + req.params.id})
   }
-});
-
+});*/
 
 module.exports = router;
